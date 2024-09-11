@@ -1,6 +1,7 @@
 import defaultTheme from "tailwindcss/defaultTheme";
 import forms from "@tailwindcss/forms";
 import daisyui from "daisyui";
+import plugin from "tailwindcss/plugin";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -18,9 +19,22 @@ export default {
         },
     },
 
-    plugins: [forms, daisyui],
+    plugins: [
+        forms,
+        daisyui,
+        plugin(({ addVariant, e }) => {
+            addVariant("sidebar-expanded", ({ modifySelectors, separator }) => {
+                modifySelectors(
+                    ({ className }) =>
+                        `.sidebar-expanded .${e(
+                            `sidebar-expanded${separator}${className}`
+                        )}`
+                );
+            });
+        }),
+    ],
 
     daisyui: {
-        themes: ['light'],
+        themes: ["light"],
     },
 };
