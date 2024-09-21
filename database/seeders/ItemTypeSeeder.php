@@ -13,8 +13,8 @@ class ItemTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        ItemType::factory()->create(['name' => 'product',]);
+        ItemType::factory()->create(['name' => 'Product', 'id' => 1]);
 
-        ItemType::factory()->create(['name' => 'service',]);
+        ItemType::factory()->create(['name' => 'Service', 'id' => 2]);
     }
 }

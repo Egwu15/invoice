@@ -1,46 +1,45 @@
 <?php
 
 use Livewire\Volt\Component;
-use App\Models\Customer;
+use App\Models\Item;
 
 new class extends Component {
     public function render(): mixed
     {
-        $customers = Customer::where('user_id', auth()->user()->id)->paginate(10);
-        return view('livewire.pages.customer.view-customer', ['customers' => $customers])->layout('layouts.app');
+        $item = '';
+        $items = Item::with(['itemType', 'discountType'])
+            ->where('business_id', auth()->user()->business->id)
+            ->paginate(10);
+        Debugbar::info($items);
+        return view('livewire.pages.item.view-item', ['items' => $items])->layout('layouts.app');
     }
 
-    public function deleteCustomer(Customer $customer)
+    public function deleteItem(Item $item)
     {
-        if ($customer->user_id != auth()->user()->id) {
+        $userId = auth()->user()->business->id;
+        if ($userId != auth()->user()->id) {
             session()->flash('error', 'Unable to delete this account');
             return;
         }
-        $customer->delete();
+        $item->delete();
     }
 }; ?>
 
 <div>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Customers
-        </h2>
-    </x-slot>
 
-    <div class="py-12" x-data="{ customer: null, showModal: false }">
-
+    <div class="py-12" x-data="{ item: null, showModal: false }">
 
         {{-- Dialog --}}
         <div x-show="showModal">
             <dialog id="my_modal_1" class="modal" :class="showModal && 'modal-open'">
                 <div class="modal-box">
                     <h3 class="text-lg font-bold text-red-500 text-center">Delete?</h3>
-                    <p class="py-4 text-center">Are you sure you want to delete this contact?</p>
+                    <p class="py-4 text-center">Are you sure you want to delete this Item?</p>
                     <p class="text-center">This action is irreversable.</p>
                     <div class=" flex justify-center mt-3">
                         <div class="mr-6 ">
-                            {{-- <button x-on:click="wire.deleteCustomer(customer); " class="btn bg-red-500 text-white">Delete</button> --}}
-                            <button x-on:click="$wire.deleteCustomer(customer); showModal = false"
+
+                            <button x-on:click="$wire.deleteItem(item); showModal = false"
                                 class="btn bg-red-500 text-white">
                                 Delete
                             </button>
@@ -57,8 +56,8 @@ new class extends Component {
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="flex justify-end pb-3">
-                        <a href="{{ route('customer.create') }}" class="btn btn-neutral outline outline-1" wire:navigate >
-                            Add Customer
+                        <a href="{{ route('item.create') }}" class="btn btn-neutral outline outline-1" wire:navigate>
+                            Add Products or Services
                         </a>
                     </div>
 
@@ -70,9 +69,10 @@ new class extends Component {
                                 <tr>
                                     <th>S/N</th>
                                     <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone Number</th>
-                                    <th>Addres</th>
+                                    <th>Amount</th>
+                                    <th>Discount Type</th>
+                                    <th>Discount Value</th>
+                                    <th>Item Type</th>
                                     <th>Date added</th>
                                     <th>Actions</th>
 
@@ -80,20 +80,21 @@ new class extends Component {
                             </thead>
                             <tbody>
 
-                                @foreach ($customers as $customer)
+                                @foreach ($items as $item)
                                     <tr>
-                                        <th>{{ ($customers->currentPage() - 1) * $customers->perPage() + $loop->iteration }}
+                                        <th>{{ ($items->currentPage() - 1) * $items->perPage() + $loop->iteration }}
                                         </th>
-                                        <td>{{ $customer->name }}</td>
-                                        <td>{{ $customer->email }}</td>
-                                        <td>{{ $customer->phone }}</td>
-                                        <td>{{ $customer->address }}</td>
-                                        <td>{{ $customer->addedAt() }}</td>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->amount }}</td>
+                                        <td>{{ $item->discountType->type_name }}</td>
+                                        <td>{{ $item->discount_value }}</td>
+                                        <td>{{ $item->itemType->name }}</td>
+                                        <td>{{ $item->addedAt() }}</td>
                                         <td>
-                                            <a href="{{ route('customer.edit', ['customer' => $customer->id]) }}"
-                                                class="btn btn-sm btn-neutral outline mr-1" wire:navigate >Edit</a>
+                                            <a href="{{ route('item.edit', ['item' => $item->id]) }}"
+                                                class="btn btn-sm btn-neutral outline mr-1">Edit</a>
                                             <button class="btn btn-sm btn-danger outline outline-1"
-                                                x-on:click="customer = '{{ $customer->id }}'; showModal = true;">
+                                                x-on:click="item = '{{ $item->id }}'; showModal = true;">
                                                 Delete
                                             </button>
                                     </tr>
@@ -105,7 +106,7 @@ new class extends Component {
 
 
                     </div>
-                    <div class="mt-10 text-center">{{ $customers->links() }}</div>
+                    <div class="mt-10 text-center">{{ $items->links() }}</div>
                 </div>
             </div>
         </div>

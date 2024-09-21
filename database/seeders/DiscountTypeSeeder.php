@@ -14,11 +14,13 @@ class DiscountTypeSeeder extends Seeder
     public function run(): void
     {
         DiscountType::factory()->create([
+            'id' => 1,
             'type_name' => 'Percentage',
             'description' => 'Discount is a percentage of the total amount',
         ]);
 
         DiscountType::factory()->create([
+            'id' => 2,
             'type_name' => 'Fixed',
             'description' => 'Discount is a fixed amount',
         ]);

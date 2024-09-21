@@ -21,18 +21,29 @@ Volt::route('business/create', 'business')
 
 Route::middleware([EnsureUserBusinessIsRegistered::class, 'auth'])->group(function () {
 
+    Route::prefix('customer')->group(function () {
+        Volt::route('/create', 'pages.customer.create-customer-form')
+            ->name('customer.create');
 
-    Volt::route('customer/create', 'pages.customer.create-customer-form')
-        ->name('customer.create');
+        Volt::route('/', 'pages.customer.view-customer')
+            ->name('customer.view');
 
-    Volt::route('customer', 'pages.customer.view-customer')
-        ->name('customer.view');
+        Volt::route('edit/{customer}', 'pages.customer.edit-customer')
+            ->name('customer.edit');
+    });
 
-    Volt::route('customer/edit/{customer}', 'pages.customer.edit-customer')
-        ->name('customer.edit');
 
-    Volt::route('item/create', 'pages.item.create-item')
-        ->name('item.create');
+    Route::prefix('item')->group(function () {
+
+        Volt::route('/create', 'pages.item.create-item')
+            ->name('item.create');
+
+        Volt::route('/', 'pages.item.view-item')
+            ->name('item.view');
+
+        Volt::route('edit/{item}', 'pages.item.edit-item')
+            ->name('item.edit');
+    });
 });
 
 

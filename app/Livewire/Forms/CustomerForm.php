@@ -13,7 +13,7 @@ class CustomerForm extends Form
     #[Validate('required|min:3')]
     public $name = '';
 
-    #[Validate('email')]
+    #[Validate('email | unique:customers,email')]
     public $email = '';
 
     #[Validate('min:10')]
