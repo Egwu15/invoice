@@ -36,6 +36,13 @@ new #[Layout('layouts.guest')] class extends Component {
 }; ?>
 
 <div>
+
+    <div class="text-center font-bold text-xl mb-4">
+        <h2>
+            Create an account with us!
+        </h2>
+        <progress class="progress w-56" value="50" max="100"></progress>
+    </div>
     <form wire:submit="register">
         <!-- Name -->
         <div>

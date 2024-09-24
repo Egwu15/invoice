@@ -11,7 +11,7 @@ new class extends Component {
         if (!auth()->check()) {
             redirect()->route('login');
         }
-        return view('livewire.business')->layout('layouts.app');
+        return view('livewire.business')->layout('layouts.guest');
     }
 
     public function createBusiness(): void
@@ -24,9 +24,14 @@ new class extends Component {
     }
 }; ?>
 
-<form wire:submit='createBusiness' class="h-screen md:h-[80vh] flex items-center justify-center">
+<form wire:submit='createBusiness' class="flex items-center justify-center">
     <div class="text-center w-full">
-        <h1 class="font-bold ">Create a business for your account</h1>
+        <div class="text-center font-bold text-xl mb-4">
+            <h2>
+                Create an account with us!
+            </h2>
+            <progress class="progress w-56" value="100" max="100"></progress>
+        </div>
         <div class=" my-3 ">
             <input wire:model='form.businessName' id="businessName" type="text" placeholder="Business name"
                 class="input input-bordered w-full max-w-xs mt-3 " />
@@ -37,26 +42,7 @@ new class extends Component {
                 class="input input-bordered w-full max-w-xs" />
             <x-input-error :messages="$errors->get('form.businessType')" class="mt-2" />
         </div>
-        <div class=" my-3 ">
-            <input wire:model='form.businessType' id="businessType" type="text" placeholder="Business type"
-                class="input input-bordered w-full max-w-xs" />
-            <x-input-error :messages="$errors->get('form.businessType')" class="mt-2" />
-        </div>
-        <div class=" my-3 ">
-            <input wire:model='form.businessType' id="businessType" type="text" placeholder="Business type"
-                class="input input-bordered w-full max-w-xs" />
-            <x-input-error :messages="$errors->get('form.businessType')" class="mt-2" />
-        </div>
-        <div class=" my-3 ">
-            <input wire:model='form.businessType' id="businessType" type="text" placeholder="Business type"
-                class="input input-bordered w-full max-w-xs" />
-            <x-input-error :messages="$errors->get('form.businessType')" class="mt-2" />
-        </div>
-        <div class=" my-3 ">
-            <input wire:model='form.businessType' id="businessType" type="text" placeholder="Business type"
-                class="input input-bordered w-full max-w-xs" />
-            <x-input-error :messages="$errors->get('form.businessType')" class="mt-2" />
-        </div>
+        
         <button class="btn btn-neutral w-full max-w-xs">Create business</button>
     </div>
 </form>
