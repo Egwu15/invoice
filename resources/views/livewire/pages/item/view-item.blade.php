@@ -55,14 +55,27 @@ new class extends Component {
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <div class="flex justify-end pb-3">
-                        <a href="{{ route('item.create') }}" class="btn btn-neutral outline outline-1" wire:navigate>
-                            Add Products or Services
-                        </a>
-                    </div>
 
 
-                    <div class="overflow-x-auto">
+
+                    @if ($items->isEmpty())
+                        <x-empty-state title="No Items Added" subTitle="Try adding some products or servicest">
+                            <a href="{{ route('item.create') }}" class="btn outline outline-1" wire:navigate>
+                                Add Products or Services
+                            </a>
+                        </x-empty-state>
+                    @endif
+
+
+                    <div class="overflow-x-auto {{ $items->isEmpty() ? 'hidden' : '' }}">
+
+                        <div class="flex justify-end pb-3">
+                            <a href="{{ route('item.create') }}" class="btn btn-neutral outline outline-1"
+                                wire:navigate>
+                                Add Products or Services
+                            </a>
+                        </div>
+
                         <table class="table table-zebra">
                             <!-- head -->
                             <thead>
@@ -70,8 +83,6 @@ new class extends Component {
                                     <th>S/N</th>
                                     <th>Name</th>
                                     <th>Amount</th>
-                                    <th>Discount Type</th>
-                                    <th>Discount Value</th>
                                     <th>Item Type</th>
                                     <th>Date added</th>
                                     <th>Actions</th>
@@ -86,8 +97,8 @@ new class extends Component {
                                         </th>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->amount }}</td>
-                                        <td>{{ $item->discountType->type_name }}</td>
-                                        <td>{{ $item->discount_value }}</td>
+
+
                                         <td>{{ $item->itemType->name }}</td>
                                         <td>{{ $item->addedAt() }}</td>
                                         <td>

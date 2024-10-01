@@ -74,46 +74,12 @@ new class extends Component {
                 </div>
 
                 <div class="text-left w-full max-w-lg text-sm">
-                    <label for='quantity'>Quantity</label>
-                    <div class=" mb-3 ">
-                        <input wire:model='form.quantity' id="quantity" type="text" placeholder="Quantity"
-                            class="input input-bordered w-full max-w-lg" />
-                        <x-input-error :messages="$errors->get('form.quantity')" class="mt-2 text-left" />
-                    </div>
-                    <div class="text-left w-full max-w-lg  text-sm">
-                        <label for='discount_type_id'>Discount type</label>
-                    </div>
-                    <div>
-                        <select wire:model='form.discount_type_id' id="discount_type_id"
-                            class="select select-bordered w-full max-w-lg text-gray-500">
-                            @foreach ($discountTypes as $discountType)
-                                <option value="{{ $discountType->id }}">{{ $discountType->type_name }}</option>
-                            @endforeach
 
-                        </select>
-                    </div>
-                    <div class="text-left w-full max-w-lg mt-3 text-sm">
-                        <label for='discount_value'>Discount Value (%)</label>
-                    </div>
-                    <div class=" mb-3 ">
-                        <input wire:model='form.discount_value' id="discount_value" type="text"
-                            placeholder="Discount Value" class="input input-bordered w-full max-w-lg" />
-                        <x-input-error :messages="$errors->get('form.discount_value')" class="mt-2 text-left" />
-                    </div>
                     <div class=" mt-3 ">
                         <textarea wire:model='form.description' id="description" type="text" placeholder="Description (optional)"
                             class="textarea textarea-bordered w-full max-w-lg"></textarea>
                         <x-input-error :messages="$errors->get('form.description')" class="text-left" />
                     </div>
-                    <div class="text-left w-full max-w-lg  text-sm">
-                        <label for='name'>Tax Rate (%)</label>
-                    </div>
-                    <div class=" mb-3 ">
-                        <input wire:model='form.tax_rate' id="tax_rate" type="text" placeholder="Tax Rate"
-                            class="input input-bordered w-full max-w-lg" />
-                        <x-input-error :messages="$errors->get('form.tax_rate')" class="mt-2 text-left" />
-                    </div>
-
 
                     <button class="btn btn-neutral w-full max-w-lg mt-6">Create Item</button>
                 </div>

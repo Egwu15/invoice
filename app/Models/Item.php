@@ -13,12 +13,8 @@ class Item extends Model
     protected $fillable = [
         'name',
         'amount',
-        'quantity',
         'description',
         'business_id',
-        'tax_rate',
-        'discount_value',
-        'discount_type_id',
         'item_type_id',
     ];
 

@@ -55,9 +55,21 @@ new class extends Component {
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+
+                @if ($customers->isEmpty())
+                    <x-empty-state title="No customers yet" subTitle="Add a customer to get started">
+                        <a href="{{ route('customer.create') }}" class="btn outline outline-1" wire:navigate>
+                            Add Customer
+                        </a>
+                    </x-empty-state>
+                @endif
+
+
+
+                <div class="p-6 text-gray-900 {{$customers->isEmpty() ? 'hidden' : ''}}">
                     <div class="flex justify-end pb-3">
-                        <a href="{{ route('customer.create') }}" class="btn btn-neutral outline outline-1" wire:navigate >
+                        <a href="{{ route('customer.create') }}" class="btn btn-neutral outline outline-1"
+                            wire:navigate>
                             Add Customer
                         </a>
                     </div>
@@ -91,7 +103,7 @@ new class extends Component {
                                         <td>{{ $customer->addedAt() }}</td>
                                         <td>
                                             <a href="{{ route('customer.edit', ['customer' => $customer->id]) }}"
-                                                class="btn btn-sm btn-neutral outline mr-1" wire:navigate >Edit</a>
+                                                class="btn btn-sm btn-neutral outline mr-1" wire:navigate>Edit</a>
                                             <button class="btn btn-sm btn-danger outline outline-1"
                                                 x-on:click="customer = '{{ $customer->id }}'; showModal = true;">
                                                 Delete

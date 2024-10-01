@@ -19,7 +19,7 @@ new class extends Component {
         Customer::create(array_merge($this->form->all(), ['user_id' => auth()->user()->id]));
         $this->reset();
         session()->flash('success', 'Customer Added successfully.');
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+        $this->redirect(route('customer.view', absolute: false), navigate: true);
     }
 }; ?>
 
