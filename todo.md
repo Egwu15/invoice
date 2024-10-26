@@ -44,6 +44,8 @@
 
 
 
+
+
 ***TODO ***
 1. add default currency ( maybe to the business table)
 2. how much revenue comes from selling products vs. providing services.

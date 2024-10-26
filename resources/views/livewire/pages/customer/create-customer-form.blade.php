@@ -47,7 +47,8 @@ new class extends Component {
             <x-input-error :messages="$errors->get('form.address')" class="mt-2" />
         </div>
         <div class=" my-3 ">
-            <textarea wire:model='form.note' id="note" type="text" placeholder="Note to self"
+            <textarea wire:model='form.note' id="note" type="text"
+                placeholder="Write here if you need to remember something about this customer"
                 class="textarea textarea-bordered w-full max-w-lg"></textarea>
             <x-input-error :messages="$errors->get('form.note')" class="" />
         </div>
