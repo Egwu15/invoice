@@ -13,7 +13,7 @@ class CustomerForm extends Form
     #[Validate('required|min:3')]
     public $name = '';
 
-    #[Validate('email | unique:customers,email')]
+    #[Validate('email')]
     public $email = '';
 
     #[Validate('min:10')]
@@ -27,6 +27,10 @@ class CustomerForm extends Form
 
     public function createCustomer()
     {
+        $this->validate([
+            'email' => 'unique:customers,email',
+        ]);
+
         $this->validate();
     }
 
