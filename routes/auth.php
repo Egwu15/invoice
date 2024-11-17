@@ -31,4 +31,6 @@ Route::middleware('auth')->group(function () {
         ->name('password.confirm');
     Route::post('logout', [AuthController::class, 'logout'])
         ->name('logout');
+    Route::get('logout', [AuthController::class, 'logout'])
+        ->name('logout');
 });

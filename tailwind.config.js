@@ -20,7 +20,7 @@ export default {
     },
 
     plugins: [
-        forms,
+        // forms,
         daisyui,
         plugin(({ addVariant, e }) => {
             addVariant("sidebar-expanded", ({ modifySelectors, separator }) => {
