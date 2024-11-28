@@ -1,6 +1,6 @@
 <div>
 
-    <x-slot:sidebar drawer="main-drawer" collapsible collapse-text="Hide" class="bg-base-100" right-mobile>
+    <x-slot:sidebar drawer="main-drawer" collapsible collapse-text="Hide" class="bg-gray-100" right-mobile>
 
         <x-mary-menu activate-by-route>
 
@@ -19,12 +19,23 @@
                 <x-mary-menu-separator />
             @endif
 
-            <x-mary-menu-item title="Hello" icon="o-sparkles" link="/" />
-            <x-mary-menu-sub title="Settings" icon="o-cog-6-tooth">
-                <x-mary-menu-item title="Wifi" icon="o-wifi" link="####" />
-                <x-mary-menu-item title="Archives" icon="o-archive-box" link="####" />
-                <x-mary-menu-item title="Home" icon="o-archive-box" link="####" />
+            <x-mary-menu-item title="Dashboard" icon="o-home" link="/" />
+
+            <x-mary-menu-sub title="Customers" icon="o-identification">
+                <x-mary-menu-item title="Create Customer" icon="o-user-plus" link="{{ route('customer.create') }}" />
+                <x-mary-menu-item title="View Customers" icon="o-user" link="{{ route('customer.view') }}" />
             </x-mary-menu-sub>
+
+            <x-mary-menu-sub title="Items" icon="o-shopping-cart">
+                <x-mary-menu-item title="Add Items" icon="o-folder-plus" link="{{ route('item.create') }}" />
+                <x-mary-menu-item title="view Items" icon="o-folder" link="{{ route('item.view') }}" />
+            </x-mary-menu-sub>
+                <x-mary-menu-item title="Invoice" icon="o-receipt-percent" link="/" />
+                <x-mary-menu-sub title="Coming Soon" icon="o-cog-6-tooth">
+                    <x-mary-menu-item title="Estimate" icon="o-wifi" link="####" />
+                    <x-mary-menu-item title="Schedular" icon="o-archive-box" link="####" />
+
+                </x-mary-menu-sub>
         </x-mary-menu>
     </x-slot:sidebar>
 </div>

@@ -33,16 +33,16 @@ new class extends Component {
             <progress class="progress w-56" value="100" max="100"></progress>
         </div>
         <div class=" my-3 ">
-            <input wire:model='form.businessName' id="businessName" type="text" placeholder="Business name"
+            <input wire:model='form.businessName' id="businessName" type="text" placeholder="Business Name"
                 class="input input-bordered w-full max-w-xs mt-3 " />
             <x-input-error :messages="$errors->get('form.businessName')" class="mt-2" />
         </div>
         <div class=" my-3 ">
-            <input wire:model='form.businessType' id="businessType" type="text" placeholder="Business type"
+            <input wire:model='form.businessType' id="businessType" type="text" placeholder="Business Type"
                 class="input input-bordered w-full max-w-xs" />
             <x-input-error :messages="$errors->get('form.businessType')" class="mt-2" />
         </div>
         
-        <button class="btn btn-neutral w-full max-w-xs">Create business</button>
+        <button class="btn my-3 btn-neutral w-full max-w-xs">Create business</button>
     </div>
 </form>

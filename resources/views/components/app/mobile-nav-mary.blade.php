@@ -13,6 +13,6 @@
     {{-- Right side actions --}}
     <x-slot:actions>
         <x-mary-button label="Messages" icon="o-envelope" link="###" class="btn-ghost btn-sm" responsive />
-        <x-mary-button label="Notifications" icon="o-bell" link="###" class="btn-ghost btn-sm" responsive />
+        {{-- <x-mary-button label="Notifications" icon="o-bell" link="###" class="btn-ghost btn-sm" responsive /> --}}
     </x-slot:actions>
 </x-mary-nav>

@@ -20,18 +20,8 @@ export default {
     },
 
     plugins: [
-        // forms,
+        forms,
         daisyui,
-        plugin(({ addVariant, e }) => {
-            addVariant("sidebar-expanded", ({ modifySelectors, separator }) => {
-                modifySelectors(
-                    ({ className }) =>
-                        `.sidebar-expanded .${e(
-                            `sidebar-expanded${separator}${className}`
-                        )}`
-                );
-            });
-        }),
     ],
 
     daisyui: {
