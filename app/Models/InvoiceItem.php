@@ -15,7 +15,6 @@ class InvoiceItem extends Model
         'item_name',
         'item_amount',
         'item_quantity',
-        'item_tax_rate',
         'discount_id',
     ];
 

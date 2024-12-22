@@ -6,8 +6,11 @@ use App\Models\DiscountType;
 use App\Models\Item;
 use App\Livewire\Forms\ItemForm;
 use App\Models\Business;
+use Illuminate\Support\Facades\Auth;
+use Livewire\WithFileUploads;
 
 new class extends Component {
+    use WithFileUploads;
     public $itemTypes;
     public $discountTypes;
     public ItemForm $form;
@@ -15,7 +18,6 @@ new class extends Component {
     public function mount(): void
     {
         $this->itemTypes = ItemType::all();
-        $this->discountTypes = DiscountType::all();
     }
     public function render(): mixed
     {
@@ -25,9 +27,10 @@ new class extends Component {
     public function save(): void
     {
         $this->form->createItem();
-        $businessId = Business::where('user_id', auth()->id())->first();
+        $businessId = Auth::user()->business;
 
         Item::create(array_merge($this->form->toArray(), ['business_id' => $businessId->id]));
+
         $this->form->reset();
         session()->flash('message', 'Item created successfully');
         redirect()->route('item.view');
@@ -80,6 +83,16 @@ new class extends Component {
                         class="textarea textarea-bordered w-full max-w-lg"></textarea>
                     <x-input-error :messages="$errors->get('form.description')" class="text-left" />
                 </div>
+
+
+                <label class="form-control w-full max-w-lg">
+                    <div class="label">
+                        <span class="label-text">Pick a file</span>
+                    </div>
+                    <input type="file" wire:model='form.image'
+                        class="file-input file-input-bordered w-full max-w-xs" />
+                    <x-input-error :messages="$errors->get('form.image')" class="text-left" />
+                </label>
 
                 <button class="btn btn-neutral w-full max-w-lg mt-6">Create Item</button>
             </div>

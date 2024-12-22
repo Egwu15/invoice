@@ -4,12 +4,13 @@ namespace App\Livewire\Forms;
 
 use Livewire\Attributes\Validate;
 use Livewire\Form;
-use App\Enums\DiscountTypeEnum;
 use App\Models\Item;
 
 
 class ItemForm extends Form
 {
+
+
 
     #[Validate('required|min:3')]
     public $name = '';
@@ -19,6 +20,9 @@ class ItemForm extends Form
 
     #[Validate('string|max:255')]
     public $description = '';
+
+    #[Validate('image|max:3024')]
+    public $image;
 
     public $business_id = '';
 
@@ -30,6 +34,7 @@ class ItemForm extends Form
     public function createItem()
     {
         $this->validate();
+        $this->storeImage();
     }
 
     public function setItem(Item $item)
@@ -39,5 +44,13 @@ class ItemForm extends Form
         $this->description = $item->description;
         $this->business_id = $item->business_id;
         $this->item_type_id = $item->item_type_id;
+        $this->image = $item->image;
+    }
+
+    public function storeImage()
+    {
+        if ($this->image) {
+            $this->image = $this->image->store('product_images', 'public');
+        }
     }
 }

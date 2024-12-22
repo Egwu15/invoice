@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('item_name');
             $table->decimal('item_amount', 18, 2);
             $table->integer('item_quantity');
-            $table->decimal('item_tax_rate', 5, 2)->default(0.00);
+            $table->string('item_image')->nullable();
             $table->foreignId('discount_id')->nullable()->constrained('discounts')->onDelete('set null');
             $table->timestamps();
         });

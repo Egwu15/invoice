@@ -16,6 +16,11 @@ class Invoice extends Model
         'total_amount',
         'discount_id',
         'tax_rate',
+        'is_sent'
+    ];
+
+    protected $cast = [
+        'is_sent' => 'boolean'
     ];
 
     public function invoiceItems()

@@ -44,6 +44,11 @@ Route::middleware([EnsureUserBusinessIsRegistered::class, 'auth'])->group(functi
         Volt::route('edit/{item}', 'pages.item.edit-item')
             ->name('item.edit');
     });
+
+    Route::prefix('invoice')->group(function () {
+        Volt::route('/create', 'pages.invoice.create-invoice')
+            ->name('invoice.create');
+    });
 });
 
 

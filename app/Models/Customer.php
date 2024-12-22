@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class Customer extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'email', 'phone', 'address', 'note', 'user_id'];
+    protected $fillable = ['name', 'email', 'phone', 'address', 'note', 'business_id'];
 
     public function user()
     {

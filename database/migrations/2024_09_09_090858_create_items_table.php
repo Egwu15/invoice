@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('amount', total: 18, places: 2);
             $table->foreignId('item_type_id')->constrained('item_types')->onDelete('cascade');
             $table->string('description')->nullable();
+            $table->string('image')->nullable();
             $table->foreignId('business_id')->constrained('businesses')->onDelete('cascade');
             $table->timestamps();
         });

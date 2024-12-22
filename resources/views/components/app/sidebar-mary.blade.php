@@ -30,12 +30,15 @@
                 <x-mary-menu-item title="Add Items" icon="o-folder-plus" link="{{ route('item.create') }}" />
                 <x-mary-menu-item title="view Items" icon="o-folder" link="{{ route('item.view') }}" />
             </x-mary-menu-sub>
-                <x-mary-menu-item title="Invoice" icon="o-receipt-percent" link="/" />
-                <x-mary-menu-sub title="Coming Soon" icon="o-cog-6-tooth">
-                    <x-mary-menu-item title="Estimate" icon="o-wifi" link="####" />
-                    <x-mary-menu-item title="Schedular" icon="o-archive-box" link="####" />
 
-                </x-mary-menu-sub>
+            <x-mary-menu-sub title="Invoice" icon="o-shopping-cart">
+                <x-mary-menu-item title="Invoice" icon="o-receipt-percent" link="{{ route('invoice.create') }}" />
+            </x-mary-menu-sub>
+            <x-mary-menu-sub title="Coming Soon" icon="o-cog-6-tooth">
+                <x-mary-menu-item title="Estimate" icon="o-wifi" link="####" />
+                <x-mary-menu-item title="Schedular" icon="o-archive-box" link="####" />
+
+            </x-mary-menu-sub>
         </x-mary-menu>
     </x-slot:sidebar>
 </div>

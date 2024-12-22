@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('business_type')->required();
+            $table->string('email')->required();
+            $table->string('phone_number')->nullable();
+            $table->string('address')->nullable();
+            $table->string('post_office_number')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('business');
+        Schema::dropIfExists('businesses');
     }
 };

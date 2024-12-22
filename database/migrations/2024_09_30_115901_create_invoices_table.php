@@ -14,10 +14,16 @@ return new class extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_number', 20)->unique();
+            $table->boolean('is_sent')->default(false);
             $table->foreignId('business_id')->constrained('businesses')->onDelete('cascade');
             $table->date('due_date')->nullable();
             $table->decimal('total_amount', 18, 2);
+            $table->decimal('total_paid', 18, 2)->nullable();
             $table->decimal('tax_rate', 5, 2)->default(0.00);
+            $table->enum('payment_status', ['pending', 'paid', 'unpaid', 'part payment']);
+            $table->string('bill_to')->nullable();
+            $table->string('ship_to')->nullable();
+            $table->string('currency')->required();
             $table->foreignId('discount_id')->nullable()->constrained('discounts')->onDelete('set null');
             $table->timestamps();
         });

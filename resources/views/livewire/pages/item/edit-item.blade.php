@@ -6,8 +6,10 @@ use App\Models\Business;
 use App\Livewire\Forms\ItemForm;
 use App\Models\ItemType;
 use App\Models\DiscountType;
+use Livewire\WithFileUploads;
 
 new class extends Component {
+    use WithFileUploads;
     private Business $business;
     public Item $item;
     public ItemForm $form;
@@ -23,19 +25,23 @@ new class extends Component {
         if ($this->item->business_id != $this->business->id) {
             return abort(403);
         }
-        // $this->form = new ItemForm();x
+        $this->form->setItem($this->item);
     }
 
     public function render(): mixed
     {
-        $this->form->setItem($this->item);
         return view('livewire.pages.item.edit-item')->layout('layouts.app');
     }
 
     public function update(): void
     {
-        $this->form->createItem();
-        $businessId = Business::where('user_id', auth()->id())->first();
+        if ($this->item->image != $this->form->image) {
+            if ($this->item->image) {
+                Storage::disk('public')->delete($this->item->image);
+            }
+            $this->form->storeImage();
+        }
+
         $this->item->update($this->form->toArray());
         $this->form->reset();
         session()->flash('message', 'Item updated successfully');
@@ -82,12 +88,22 @@ new class extends Component {
                 </div>
 
                 <div class="text-left w-full max-w-lg text-sm">
-                  
+
                     <div class=" mt-3 ">
                         <textarea wire:model='form.description' id="description" type="text" placeholder="Description (optional)"
                             class="textarea textarea-bordered w-full max-w-lg"></textarea>
                         <x-input-error :messages="$errors->get('form.description')" class="text-left" />
                     </div>
+
+                    <label class="form-control w-full max-w-lg">
+                        <div class="label">
+                            <span class="label-text">Pick a file</span>
+                        </div>
+                        <input type="file" wire:model='form.image'
+                            class="file-input file-input-bordered w-full max-w-xs" />
+                        <x-input-error :messages="$errors->get('form.image')" class="text-left" />
+                    </label>
+
 
                     <button class="btn btn-neutral w-full max-w-lg mt-6">Update Item</button>
                 </div>

@@ -16,6 +16,7 @@ class Item extends Model
         'description',
         'business_id',
         'item_type_id',
+        'image'
     ];
 
 

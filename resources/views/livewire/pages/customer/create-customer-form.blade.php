@@ -16,7 +16,7 @@ new class extends Component {
     {
         $this->form->createCustomer();
 
-        Customer::create(array_merge($this->form->all(), ['user_id' => auth()->user()->id]));
+        Customer::create(array_merge($this->form->all(), ['business_id' => auth()->user->business]));
         $this->reset();
         session()->flash('success', 'Customer Added successfully.');
         $this->redirect(route('customer.view', absolute: false), navigate: true);

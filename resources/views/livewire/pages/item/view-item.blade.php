@@ -21,6 +21,9 @@ new class extends Component {
             session()->flash('error', 'Unable to delete this account');
             return;
         }
+        if ($item->image) {
+            Storage::disk('public')->delete($item->image);
+        }
         $item->delete();
     }
 }; ?>
@@ -81,6 +84,7 @@ new class extends Component {
                             <thead>
                                 <tr>
                                     <th>S/N</th>
+                                    <th>Image</th>
                                     <th>Name</th>
                                     <th>Amount</th>
                                     <th>Item Type</th>
@@ -95,6 +99,8 @@ new class extends Component {
                                     <tr>
                                         <th>{{ ($items->currentPage() - 1) * $items->perPage() + $loop->iteration }}
                                         </th>
+                                        <td><img class="h-10 w-10 rounded-md" src="{{ $item->image }}"
+                                                alt="{{ $item->name }}"></td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->amount }}</td>
 
