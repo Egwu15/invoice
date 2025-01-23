@@ -6,7 +6,7 @@ use App\Models\Customer;
 new class extends Component {
     public function render(): mixed
     {
-        $customers = Customer::where('user_id', auth()->user()->id)->paginate(10);
+        $customers = Customer::where('business_id', auth()->user()->id)->paginate(10);
         return view('livewire.pages.customer.view-customer', ['customers' => $customers])->layout('layouts.app');
     }
 
@@ -36,7 +36,7 @@ new class extends Component {
                 <div class="modal-box">
                     <h3 class="text-lg font-bold text-red-500 text-center">Delete?</h3>
                     <p class="py-4 text-center">Are you sure you want to delete this contact?</p>
-                    <p class="text-center">This action is irreversable.</p>
+                    <p class="text-center">This action is irreversible.</p>
                     <div class=" flex justify-center mt-3">
                         <div class="mr-6 ">
                             {{-- <button x-on:click="wire.deleteCustomer(customer); " class="btn bg-red-500 text-white">Delete</button> --}}
@@ -66,7 +66,7 @@ new class extends Component {
 
 
 
-                <div class="p-6 text-gray-900 {{$customers->isEmpty() ? 'hidden' : ''}}">
+                <div class="p-6 text-gray-900 {{ $customers->isEmpty() ? 'hidden' : '' }}">
                     <div class="flex justify-end pb-3">
                         <a href="{{ route('customer.create') }}" class="btn btn-neutral outline outline-1"
                             wire:navigate>

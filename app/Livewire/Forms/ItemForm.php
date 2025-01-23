@@ -21,7 +21,7 @@ class ItemForm extends Form
     #[Validate('string|max:255')]
     public $description = '';
 
-    #[Validate('image|max:3024')]
+    #[Validate('nullable|image|max:3024')]
     public $image;
 
     public $business_id = '';

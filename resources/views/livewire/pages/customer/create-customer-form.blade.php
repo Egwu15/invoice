@@ -3,6 +3,7 @@
 use Livewire\Volt\Component;
 use App\Livewire\Forms\CustomerForm;
 use App\Models\Customer;
+use App\Models\Business;
 
 new class extends Component {
     public CustomerForm $form;
@@ -15,8 +16,8 @@ new class extends Component {
     public function save(): void
     {
         $this->form->createCustomer();
-
-        Customer::create(array_merge($this->form->all(), ['business_id' => auth()->user->business]));
+        $businessId = Business::where('user_id', auth()->id())->first();
+        Customer::create(array_merge($this->form->all(), ['business_id' => $businessId->id]));
         $this->reset();
         session()->flash('success', 'Customer Added successfully.');
         $this->redirect(route('customer.view', absolute: false), navigate: true);
