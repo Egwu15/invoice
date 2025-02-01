@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureUserBusinessIsRegistered;
 use App\Http\Middleware\RedirectUserWithBusiness;
@@ -48,6 +49,16 @@ Route::middleware([EnsureUserBusinessIsRegistered::class, 'auth'])->group(functi
     Route::prefix('invoice')->group(function () {
         Volt::route('/create', 'pages.invoice.create-invoice')
             ->name('invoice.create');
+
+        Volt::route('/', 'pages.invoice.view-invoice')
+            ->name('invoice.view');
+
+        Volt::route('details/{invoice}', 'pages.invoice.invoice-detail')
+            ->name('invoice.detail');
+
+        Volt::route('send/{invoice}', 'pages.invoice.invoiceTemplates.template1')
+            ->name('invoice.send');
+        Route::get('/download', [PdfController::class, 'index']);
     });
 });
 

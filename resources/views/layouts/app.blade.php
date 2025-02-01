@@ -22,7 +22,7 @@
 
 <body>
 
-
+    <x-mary-toast />
     <!-- Page wrapper -->
 
     <x-app.mobile-nav-mary />

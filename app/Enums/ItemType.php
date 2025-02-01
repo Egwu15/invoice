@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ItemTypeId: int
+enum ItemType: int
 {
     case PRODUCT = 1;
     case SERVICE = 2;

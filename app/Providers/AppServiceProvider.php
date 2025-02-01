@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Providers;
-
+use App\View\Components\MenuItem;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Blade::component('menu-item', MenuItem::class);
     }
 }

@@ -4,29 +4,31 @@ use Livewire\Volt\Component;
 use App\Models\ItemType;
 use App\Models\DiscountType;
 use App\Models\Item;
-use App\Livewire\Forms\ItemForm;
-use App\Models\Business;
 use App\Models\Customer;
+use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use Illuminate\Support\Str;
+use Mary\Traits\Toast;
+use Illuminate\Support\Collection;
 
 new class extends Component {
+    use Toast;
     public $itemTypes;
     public $discountTypes;
     public $dueDate;
     public $invoiceNumber = '';
     public $totalAmount = 0;
-    public $customers = [];
+    public Collection $customers;
     public $searchTerm = '';
     public $productSearchTerm = '';
     public $invoiceItems = [];
     public $selectedInvoiceItems = [];
     public bool $openItemModal = false;
-    public bool $openContactModal = false;
-    public Customer $contact;
+    public int $contact;
     public $selectedDiscountType;
     public $selectedDiscountAmount;
     public $currency;
-    public $taxRate;
+    public $taxRate = 7;
 
     public $currencies = [
         [
@@ -44,9 +46,9 @@ new class extends Component {
         $this->itemTypes = ItemType::all();
         $this->discountTypes = DiscountType::all();
         $this->invoiceNumber = substr(Str::uuid(), 0, 6);
-        $this->customers = Customer::select('id', 'name')->get();
+        $this->customers = Customer::all();
         $this->invoiceItems = Item::all();
-        $this->currency = $this->currencies[0];
+        $this->currency = $this->currencies[0]['name'];
     }
     public function render(): mixed
     {
@@ -72,7 +74,7 @@ new class extends Component {
         $this->searchTerm = $value;
         if (!empty($this->searchTerm)) {
             $this->customers = Customer::select('id', 'name')
-                ->where('name', 'like', '%' . $this->searchTerm . '%')
+                ->where('name', 'like', "%{$this->searchTerm}%")
                 ->get();
         } else {
             $this->customers = Customer::select('id', 'name')->get();
@@ -124,6 +126,69 @@ new class extends Component {
     public function save(): void
     {
         $this->validate();
+
+        // Create a new invoice record
+
+        $contactCollection = Customer::where('id', $this->contact)->exists();
+
+        if (!$contactCollection) {
+            $this->warning('Contact not found', css: 'bg-red-500 text-white');
+            return;
+        }
+
+        $isInvoiceNumberUsed = Invoice::where('invoice_number', $this->invoiceNumber)->exists();
+
+        if ($isInvoiceNumberUsed) {
+            $this->warning('Invoice number Exists', css: 'bg-red-500 text-white');
+            return;
+        }
+
+
+        $invoice = new Invoice();
+        $invoice->fill([
+            'invoice_number' => $this->invoiceNumber,
+            'due_date' => $this->dueDate,
+            'total_amount' => $this->totalAmount,
+            'total_paid' => 0,
+            'tax_rate' => $this->taxRate ?? 0,
+            'payment_status' => 'pending',
+            'customer_id' => $this->contact,
+            'currency' => $this->currency,
+            'business_id' => auth()->user()->business->id,
+            'discount_id' => $this->selectedDiscountType?->id ?? null,
+        ]);
+
+        // Save the invoice
+        $invoice->save();
+
+        
+        // Save associated invoice items
+        foreach ($this->selectedInvoiceItems as $item) {
+
+            $invoiceItem = new InvoiceItem();
+            $invoiceItem->fill([
+                'invoice_id' => $invoice->id,
+                'id' => $item['id'],
+                'description' => $item['name'],
+                'quantity' => $item['quantity'],
+                'price' => $item['price'],
+                'image' => Item::find($item['id'])->only(['image'])['image'],
+
+            ]);
+            $invoiceItem->save();
+        }
+
+        // Clear selected items
+        $this->selectedInvoiceItems = [];
+
+        // Reset form fields
+        $this->invoiceNumber = substr(Str::uuid(), 0, 6);
+        $this->dueDate = null;
+        $this->totalAmount = 0;
+        $this->taxRate = 0;
+        $this->currency = $this->currencies[0];
+
+        $this->success(title: 'Invoice created Successfully', css: 'bg-green-500 text-white');
     }
 }; ?>
 
@@ -149,54 +214,29 @@ new class extends Component {
 
 
                     <x-mary-input readonly value="{{ $totalAmount }}" label="Total amount" class="border-gray-500" />
-
-                    <x-mary-select label="Discount Type" icon="o-user" :options="$discountTypes" option-label="type_name"
-                        class="border-gray-500" wire:model="selectedDiscountType" />
-
-                    <x-mary-input wire:model="selectedDiscountAmount" label="Discount Amount" class="border-gray-500" />
-
-
-                    <x-mary-input wire:model="taxRate" label="Tax Rate" class="border-gray-500" />
-
-                    <x-mary-select label="Currency" icon="o-user" :options="$currencies" wire:model="currency"
-                        class="border-gray-500" />
-
-                    <x-mary-choices-offline icon="o-users" label="Contact" wire:model="contact" :options="$customers"
+                    <x-mary-choices icon="o-users" label="Contact" wire:model="contact" :options="$customers"
                         placeholder="Search ..." single searchable class="w-full border-gray-500" />
+
+
                 </div>
-
-
-
-
-
+                <x-mary-collapse>
+                    <x-slot:heading>
+                        Discount, Tax and Currency
+                    </x-slot:heading>
+                    <x-slot:content>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <x-mary-select label="Discount Type" icon="o-user" :options="$discountTypes"
+                                option-label="type_name" class="border-gray-500" wire:model="selectedDiscountType" />
+                            <x-mary-input wire:model="selectedDiscountAmount" label="Discount Amount"
+                                class="border-gray-500" />
+                            <x-mary-input wire:model="taxRate" label="Tax Rate" class="border-gray-500" />
+                            <x-mary-select label="Currency" icon="o-user" :options="$currencies" wire:model="currency" option-value="name"
+                                class="border-gray-500" />
+                        </div>
+                    </x-slot:content>
+                </x-mary-collapse>
 
                 <div>
-
-                    {{-- customer select modal --}}
-                    <div>
-                        <x-mary-modal wire:model="openContactModal" class="modal">
-                            <input type="text" placeholder="Search contacts" id="searchContact"
-                                wire:model.debounce.live="searchTerm"
-                                class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 my-4">
-                            @foreach ($customers as $customer)
-                                <div
-                                    x-on:click = "selectCustomer('{{ $customer->id }}', '{{ $customer->name }}'); $wire.openContactModal = false;">
-                                    <p class="bg-gray-100 w-full my-2 px-2 py-2 rounded-md cursor-pointer"
-                                        value="{{ $customer->id }}">
-                                        {{ $customer->name }}</p>
-                                </div>
-                            @endforeach
-                            <div class="text-center">
-                                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                    href="{{ route('customer.create') }}" wire:navigate>
-                                    {{ __('Add Customer') }}
-                                </a>
-                            </div>
-
-                        </x-mary-modal>
-                    </div>
-
-
 
                     {{-- product Modal --}}
 
@@ -206,7 +246,7 @@ new class extends Component {
 
                             <input type="text" placeholder="Search Items" id="search"
                                 wire:model.debounce.live="productSearchTerm"
-                                class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 my-4">
+                                class="w-full border-gray-300 rounded-md shadow-sm my-4 p-3 focus:border-none outline-none">
                             @foreach ($invoiceItems as $invoiceItem)
                                 <div>
                                     <p class="bg-gray-100 w-full my-2 px-2 py-2 rounded-md cursor-pointer"
@@ -222,35 +262,48 @@ new class extends Component {
 
                     </x-mary-modal>
 
-
                 </div>
 
 
-                <button type="button" class="btn w-full mt-8" @click="$wire.openItemModal = true">
-                    Add Item
-                </button>
+
 
                 {{-- selected invoice items --}}
-                <div id="items-container" class="space-y-4 mt-4">
+                <div id="items-container" class="mt-4 ">
                     @foreach ($selectedInvoiceItems as $index => $item)
-                        <div class="md:flex md:items-center md:space-x-3">
-                            <input type="text" placeholder="Item Description" readonly
-                                wire:model="selectedInvoiceItems.{{ $index }}.description"
-                                class="flex-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            <input type="number" placeholder="Quantity"
-                                wire:model="selectedInvoiceItems.{{ $index }}.quantity" min="1"
-                                class="w-24 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                wire:change="updateTotalAmount">
-                            <input type="number" placeholder="Price"
-                                wire:model="selectedInvoiceItems.{{ $index }}.price" min="0"
-                                class="w-24 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 my-4"
-                                wire:change="updateTotalAmount">
-                            <button type="button" wire:click="removeItem({{ $index }})"
-                                class="text-red-500 hover:text-red-700">Remove</button>
-                        </div>
+                        <x-mary-list-item :item="$selectedInvoiceItems" class="">
+
+                            <x-slot:value>
+                                <h5 wire:model="selectedInvoiceItems.{{ $index }}.name"
+                                    class="rounded-md shadow-sm border-none">
+                                    {{ $selectedInvoiceItems[$index]['name'] }}
+                                </h5>
+                            </x-slot:value>
+                            <x-slot:sub-value class="flex ">
+                                <x-mary-input type="number" label="Quantity"
+                                    wire:model="selectedInvoiceItems.{{ $index }}.quantity" min="1"
+                                    class=" border-gray-300 rounded-md shadow-sm border md:mr-2"
+                                    wire:change="updateTotalAmount" />
+
+                                <x-mary-input type="number" label="Price"
+                                    wire:model="selectedInvoiceItems.{{ $index }}.price" min="0"
+                                    class=" border-gray-300 rounded-md shadow-sm border md:ml-2"
+                                    wire:change="updateTotalAmount" />
+                            </x-slot:sub-value>
+
+                            <x-slot:actions class="flex  x">
+                                <div class=" justify-end">
+                                    <x-mary-button icon="o-trash" class="text-red-500"
+                                        wire:click="removeItem({{ $index }})" spinner />
+                                </div>
+                            </x-slot:actions>
+                        </x-mary-list-item>
                     @endforeach
                 </div>
-
+                <div class="flex justify-center p-4">
+                    <x-mary-button type="button" icon="o-briefcase" class="" @click="$wire.openItemModal = true">
+                        Add Item
+                    </x-mary-button>
+                </div>
 
 
 
@@ -267,20 +320,8 @@ new class extends Component {
         <script>
             function invoiceForm() {
                 return {
-                    customers: [],
-
-
                     invoiceItems: @entangle('invoiceItems'),
                     selectedInvoiceItems: @entangle('selectedInvoiceItems'),
-
-
-                    selectCustomer(id, name) {
-                        this.selectedCustomerIndex = id;
-                        this.selectedCustomerName = name;
-
-                    },
-
-
                 };
             }
         </script>

@@ -2,28 +2,31 @@
 
 use Livewire\Volt\Component;
 use App\Models\Customer;
+use App\Models\Invoice;
 
 new class extends Component {
     public function render(): mixed
     {
-        $customers = Customer::where('business_id', auth()->user()->business->id)->paginate(10);
-        return view('livewire.pages.customer.view-customer', ['customers' => $customers])->layout('layouts.app');
+        $invoices = Invoice::where('business_id', auth()->user()->business->id)
+            ->orderByDesc('created_at')
+            ->paginate(10);
+        return view('livewire.pages.invoice.view-invoice', ['invoices' => $invoices])->layout('layouts.app');
     }
 
-    public function deleteCustomer(Customer $customer)
+    public function deleteCustomer(Invoice $invoice)
     {
-        if ($customer->user_id != auth()->user()->id) {
-            session()->flash('error', 'Unable to delete this account');
+        if ($invoice->business_id != auth()->user()->business->id) {
+            session()->flash('error', 'Unable to delete this invoice');
             return;
         }
-        $customer->delete();
+        $invoice->delete();
     }
 }; ?>
 
 <div>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Customers
+            Invoice
         </h2>
     </x-slot>
 
@@ -35,7 +38,7 @@ new class extends Component {
             <dialog id="my_modal_1" class="modal" :class="showModal && 'modal-open'">
                 <div class="modal-box">
                     <h3 class="text-lg font-bold text-red-500 text-center">Delete?</h3>
-                    <p class="py-4 text-center">Are you sure you want to delete this contact?</p>
+                    <p class="py-4 text-center">Are you sure you want to delete this invoice?</p>
                     <p class="text-center">This action is irreversible.</p>
                     <div class=" flex justify-center mt-3">
                         <div class="mr-6 ">
@@ -56,8 +59,8 @@ new class extends Component {
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
-                @if ($customers->isEmpty())
-                    <x-empty-state title="No customers yet" subTitle="Add a customer to get started">
+                @if ($invoices->isEmpty())
+                    <x-empty-state title="No invoices yet" subTitle="Add a customer to get started">
                         <a href="{{ route('customer.create') }}" class="btn outline outline-1" wire:navigate>
                             Add Customer
                         </a>
@@ -66,11 +69,11 @@ new class extends Component {
 
 
 
-                <div class="p-6 text-gray-900 {{ $customers->isEmpty() ? 'hidden' : '' }}">
+                <div class="p-6 text-gray-900 {{ $invoices->isEmpty() ? 'hidden' : '' }}">
                     <div class="flex justify-end pb-3">
                         <a href="{{ route('customer.create') }}" class="btn btn-neutral outline outline-1"
                             wire:navigate>
-                            Add Customer
+                            Add Invoice
                         </a>
                     </div>
 
@@ -81,10 +84,11 @@ new class extends Component {
                             <thead>
                                 <tr>
                                     <th>S/N</th>
+                                    <th>Invoice Number</th>
                                     <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone Number</th>
-                                    <th>Addres</th>
+                                    <th>Total</th>
+                                    <th>Sent</th>
+                                    <th>Due Date</th>
                                     <th>Date added</th>
                                     <th>Actions</th>
 
@@ -92,20 +96,31 @@ new class extends Component {
                             </thead>
                             <tbody>
 
-                                @foreach ($customers as $customer)
+                                @foreach ($invoices as $invoice)
                                     <tr>
-                                        <th>{{ ($customers->currentPage() - 1) * $customers->perPage() + $loop->iteration }}
+                                        <th>{{ ($invoices->currentPage() - 1) * $invoices->perPage() + $loop->iteration }}
                                         </th>
-                                        <td>{{ $customer->name }}</td>
-                                        <td>{{ $customer->email }}</td>
-                                        <td>{{ $customer->phone }}</td>
-                                        <td>{{ $customer->address }}</td>
-                                        <td>{{ $customer->addedAt() }}</td>
+                                        <td>{{ $invoice->invoice_number }}</td>
+                                        <td>{{ $invoice->customer->name }}</td>
+                                        <td>{{ $invoice->total_amount }}</td>
+                                        @if ($invoice->is_sent)
+                                            <td> <x-mary-icon name="o-check-circle" class="w-9 h-9 text-purple-500" />
+                                            </td>
+                                        @else
+                                            <td> <x-mary-icon name="o-x-circle" class="w-9 h-9 text-red-500" /></td>
+                                        @endif
+
+                                        <td>{{ $invoice->dueDate() }}</td>
+                                        <td>{{ $invoice->addedAt() }}</td>
                                         <td>
-                                            <a href="{{ route('customer.edit', ['customer' => $customer->id]) }}"
+                                            <a href="{{ route('invoice.send', ['invoice' => $invoice]) }}"
+                                                class="btn btn-sm btn-neutral outline mr-1" wire:navigate>See</a>
+                                            <a href="{{ route('invoice.detail', ['invoice' => $invoice]) }}"
+                                                class="btn btn-sm btn-neutral outline mr-1" wire:navigate>View</a>
+                                            <a href="{{ route('customer.edit', ['customer' => $invoice->id]) }}"
                                                 class="btn btn-sm btn-neutral outline mr-1" wire:navigate>Edit</a>
                                             <button class="btn btn-sm btn-danger outline outline-1"
-                                                x-on:click="customer = '{{ $customer->id }}'; showModal = true;">
+                                                x-on:click="customer = '{{ $invoice->id }}'; showModal = true;">
                                                 Delete
                                             </button>
                                     </tr>
@@ -117,7 +132,7 @@ new class extends Component {
 
 
                     </div>
-                    <div class="mt-10 text-center">{{ $customers->links() }}</div>
+                    <div class="mt-10 text-center">{{ $invoices->links() }}</div>
                 </div>
             </div>
         </div>
