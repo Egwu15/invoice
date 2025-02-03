@@ -11,21 +11,21 @@ class PdfService
     public function download($invoice)
     {
         try {
-            // $this->debugNonUtf8Characters($invoice);
             $pdf = Pdf::loadView('livewire.pages.invoice.invoiceTemplates.template1', ['invoice' => $invoice]);
-            $pdf->render();
             return  $pdf->download('invoice.pdf');
         } catch (\Throwable $th) {
             dd($th);
         }
     }
 
-    private function debugNonUtf8Characters($data)
+    public function generate($invoice)
     {
-        array_walk_recursive($data, function ($value, $key) {
-            if (is_string($value) && !mb_check_encoding($value, 'UTF-8')) {
-                dd("Non-UTF-8 character found in key: $key, value: $value\n");
-            }
-        });
+        try {
+            $pdf = Pdf::loadView('livewire.pages.invoice.invoiceTemplates.template1', ['invoice' => $invoice]);
+            return $pdf->output(); // Returns PDF content as a string
+        } catch (\Throwable $th) {
+            dd($th);
+        }
     }
+
 }

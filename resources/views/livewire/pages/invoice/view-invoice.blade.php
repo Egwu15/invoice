@@ -117,8 +117,7 @@ new class extends Component {
                                                 class="btn btn-sm btn-neutral outline mr-1" wire:navigate>See</a>
                                             <a href="{{ route('invoice.detail', ['invoice' => $invoice]) }}"
                                                 class="btn btn-sm btn-neutral outline mr-1" wire:navigate>View</a>
-                                            <a href="{{ route('customer.edit', ['customer' => $invoice->id]) }}"
-                                                class="btn btn-sm btn-neutral outline mr-1" wire:navigate>Edit</a>
+                                     
                                             <button class="btn btn-sm btn-danger outline outline-1"
                                                 x-on:click="customer = '{{ $invoice->id }}'; showModal = true;">
                                                 Delete

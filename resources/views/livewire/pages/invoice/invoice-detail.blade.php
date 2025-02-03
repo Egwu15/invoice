@@ -4,10 +4,15 @@ use Livewire\Volt\Component;
 use App\Models\Invoice;
 use App\Models\Business;
 use Mary\Traits\Toast;
+use App\Mail\SendReceipt;
+use App\Services\PdfService;
+use App\Models\Customer;
+use Illuminate\Support\Facades\Mail;
 
 new class extends Component {
     use Toast;
-    private $invoice;
+    public Invoice $invoice;
+    public $percentagePaid = 0;
 
     public function mount(Invoice $invoice)
     {
@@ -18,6 +23,8 @@ new class extends Component {
     {
         $userId = auth()->user()->id;
 
+        $this->percentagePaid = ($this->invoice->total_paid / $this->invoice->total_amount) * 100;
+
         $matchingBusinesses = Business::whereIn('user_id', [$userId])->get();
 
         if ($this->invoice === null || empty($matchingBusinesses)) {
@@ -25,6 +32,25 @@ new class extends Component {
         }
 
         return view('livewire.pages.invoice.invoice-detail', ['invoice' => $this->invoice])->layout('layouts.app');
+    }
+
+    public function sendMail()
+    {
+        //add a once a day limit on attempt of receipt sending for each receipt
+        //prevent double send.
+        $pdfService = new PdfService();
+        $pdfContent = $pdfService->generate($this->invoice);
+        try {
+            Mail::to('charles.aoloyede@gmail.com')->send(new SendReceipt($this->invoice, $pdfContent));
+        } catch (\Throwable $th) {
+            dd($th);
+        }
+        $this->success(title: 'Invoice sent Successfully!', css: 'bg-green-500 text-white');
+    }
+
+    public function testMail()
+    {
+        $this->redirectRoute('sendMail');
     }
 
     // public function deleteCustomer(Customer $customer)
@@ -48,14 +74,21 @@ new class extends Component {
         <x-slot:title>
             <h1 class="text-2xl font-semibold mb-4">Invoice Details</h1>
             <div class="md:flex my-3 gap-4">
-                <x-mary-button label="Download Receipt" external icon="o-arrow-down-tray" class="mb-2 md:mb-0"/>
-                <x-mary-button label="Send Receipt" external icon="o-paper-airplane" />
-                <x-mary-button label="View Receipt" external icon="o-eye" />
+                <x-mary-button label="Download Receipt" external icon="o-arrow-down-tray"
+                    class="mb-2 md:mb-0 bg-purple-700 text-white" spinner
+                    onclick="window.location.href='{{ route('download', ['invoice' => $invoice]) }}'" />
+                <x-mary-button label="Send Receipt" external icon="o-paper-airplane" class=" bg-purple-700 text-white"
+                    wire:click="sendMail" spinner />
+                <x-mary-button label="Test Mail" external icon="o-eye" class="bg-purple-700 text-white"
+                    wire:click='testMail' spinner />
+                <x-mary-button label="Mark as Paid" external icon="o-check" class="bg-purple-700 text-white" spinner />
+
             </div>
         </x-slot:title>
         <!-- Invoice Information -->
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
             <div>
                 <h2 class="text-lg font-medium">Invoice Number:</h2>
                 <p>{{ $invoice->invoice_number }}</p>
@@ -91,19 +124,16 @@ new class extends Component {
             <div>
                 <h2 class="text-lg font-medium">Payment Status:</h2>
 
-                @if ($invoice->total_amount > 0)
-                    <div>
-                        <progress-bar :value="{{ ($invoice->total_paid / $invoice->total_amount) * 100 }}"
-                            max="100" class="progress"></progress-bar>
-                        <p class="mt-2">
-                            {{ ucfirst($invoice->payment_status) }}
-                            ({{ number_format(($invoice->total_paid / $invoice->total_amount) * 100, 2) }}%)
-                        </p>
-                    </div>
+                @if ($invoice->total_amount > 0 && isset($percentagePaid) && is_numeric($percentagePaid))
+                    <x-mary-progress-radial value="{{ $percentagePaid }}" max='100'
+                        class="mt-3 bg-white text-purple-700 border-4 border-purple-600 " />
+                @else
+                    <p>Percentage paid not available.</p>
                 @endif
+
             </div>
         </div>
-        <hr class="mt-5"/>
+        <hr class="mt-5" />
 
         <!-- Invoice Items Table -->
         <h2 class="text-xl font-semibold mt-6 mb-4">Invoice Items</h2>

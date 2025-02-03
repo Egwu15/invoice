@@ -58,8 +58,8 @@ Route::middleware([EnsureUserBusinessIsRegistered::class, 'auth'])->group(functi
 
         Volt::route('send/{invoice}', 'pages.invoice.invoiceTemplates.template1')
             ->name('invoice.send');
-        Route::get('/download', [PdfController::class, 'index']);
-    });
+        Route::get('/download', [PdfController::class, 'download'])->name('download');
+        Route::get('/sendMail', [PdfController::class, 'sendMail'])->name('sendMail');    });
 });
 
 

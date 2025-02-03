@@ -6,6 +6,7 @@ use App\Models\Customer;
 new class extends Component {
     public function render(): mixed
     {
+
         $customers = Customer::where('business_id', auth()->user()->business->id)->paginate(10);
         return view('livewire.pages.customer.view-customer', ['customers' => $customers])->layout('layouts.app');
     }
