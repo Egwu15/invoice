@@ -6,13 +6,14 @@ use App\Models\Business;
 use Mary\Traits\Toast;
 use App\Mail\SendReceipt;
 use App\Services\PdfService;
-use App\Models\Customer;
 use Illuminate\Support\Facades\Mail;
 
 new class extends Component {
     use Toast;
     public Invoice $invoice;
     public $percentagePaid = 0;
+    public $totalPaidInput = 0.0;
+    public $openTotalPaidPopUp;
 
     public function mount(Invoice $invoice)
     {
@@ -43,7 +44,7 @@ new class extends Component {
         try {
             Mail::to('charles.aoloyede@gmail.com')->send(new SendReceipt($this->invoice, $pdfContent));
         } catch (\Throwable $th) {
-            dd($th);
+            $this->warning('Unable to send Email', css: 'bg-red-500 text-white');
         }
         $this->success(title: 'Invoice sent Successfully!', css: 'bg-green-500 text-white');
     }
@@ -53,14 +54,23 @@ new class extends Component {
         $this->redirectRoute('sendMail');
     }
 
-    // public function deleteCustomer(Customer $customer)
-    // {
-    //     if ($customer->user_id != Business::select()) {
-    //         session()->flash('error', 'Unable to delete this account');
-    //         return;
-    //     }
-    //     $customer->delete();
-    // }
+    public function setTotalPaid()
+    {
+        if ($this->totalPaidInput > $this->invoice->total_amount) {
+            $this->warning('Input is greater than total!', css: 'bg-red-500 text-white');
+            $this->openTotalPaidPopUp = false;
+            return;
+        }
+
+        $this->invoice->update(['total_paid' => $this->totalPaidInput]);
+        $this->totalPaidInput = 0.0;
+        $this->openTotalPaidPopUp = false;
+    }
+
+    public function markAsPaid()
+    {
+        $this->invoice->update(['total_paid' => $this->invoice->total_amount]);
+    }
 }; ?>
 
 
@@ -68,6 +78,21 @@ new class extends Component {
     <!-- Invoice Card -->
 
     <x-mary-card class="bg-white shadow-lg rounded-lg p-6">
+
+        {{-- Set invoice Dialog --}}
+        <x-mary-modal wire:model="openTotalPaidPopUp" class="backdrop-blur">
+            <h3 class="text-center font-bold">Set Amount paid</h3>
+            <x-mary-form wire:submit="setTotalPaid">
+                <x-mary-input label="Amount" wire:model="totalPaidInput" money hint="Enter the value of total paid" />
+
+                <x-slot:actions>
+                    <x-mary-button label="Cancel" @click="$wire.openTotalPaidPopUp = false" />
+                    <x-mary-button label="Save" class="btn-primary" type="submit" spinner="setTotalPaid" />
+                </x-slot:actions>
+            </x-mary-form>
+
+        </x-mary-modal>
+
 
 
 
@@ -81,13 +106,17 @@ new class extends Component {
                     wire:click="sendMail" spinner />
                 <x-mary-button label="Test Mail" external icon="o-eye" class="bg-purple-700 text-white"
                     wire:click='testMail' spinner />
-                <x-mary-button label="Mark as Paid" external icon="o-check" class="bg-purple-700 text-white" spinner />
+                <x-mary-button label="Set total paid" external icon="o-check" class="bg-purple-700 text-white"
+                    @click="$wire.openTotalPaidPopUp = true" />
+                <x-mary-button label="Mark as Paid" external icon="o-check" class="bg-purple-700 text-white"
+                    wire:click='markAsPaid' spinner />
 
             </div>
         </x-slot:title>
         <!-- Invoice Information -->
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid
+                    grid-cols-1 md:grid-cols-2 gap-6">
 
             <div>
                 <h2 class="text-lg font-medium">Invoice Number:</h2>

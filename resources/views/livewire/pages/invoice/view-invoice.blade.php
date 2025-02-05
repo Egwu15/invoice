@@ -60,8 +60,8 @@ new class extends Component {
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
                 @if ($invoices->isEmpty())
-                    <x-empty-state title="No invoices yet" subTitle="Add a customer to get started">
-                        <a href="{{ route('customer.create') }}" class="btn outline outline-1" wire:navigate>
+                    <x-empty-state title="No invoices yet" subTitle="Add a Invoice to get started">
+                        <a href="{{ route('invoice.create') }}" class="btn outline outline-1" wire:navigate>
                             Add Customer
                         </a>
                     </x-empty-state>
@@ -71,7 +71,7 @@ new class extends Component {
 
                 <div class="p-6 text-gray-900 {{ $invoices->isEmpty() ? 'hidden' : '' }}">
                     <div class="flex justify-end pb-3">
-                        <a href="{{ route('customer.create') }}" class="btn btn-neutral outline outline-1"
+                        <a href="{{ route('invoice.create') }}" class="btn btn-neutral outline outline-1"
                             wire:navigate>
                             Add Invoice
                         </a>

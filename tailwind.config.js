@@ -13,10 +13,12 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                primary: "#7e22ce",
+            },
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
             },
-            
         },
     },
 
@@ -26,6 +28,16 @@ export default {
     ],
 
     daisyui: {
-        themes: ["light"],
+        themes: [
+            {
+                mytheme: {
+                    primary: "#7e22ce",
+                    accent: "#7e22ce",
+                    neutral: "#7e22ce",
+                    "base-100": "#ffffff",
+                },
+            },
+            "light",
+        ],
     },
 };

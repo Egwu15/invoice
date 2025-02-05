@@ -40,6 +40,7 @@ new class extends Component {
             'name' => 'Dollars',
         ],
     ];
+    public bool $setPaymentModal = false;
 
     public function mount(): void
     {
@@ -300,7 +301,7 @@ new class extends Component {
                     @endforeach
                 </div>
                 <div class="flex justify-center p-4">
-                    <x-mary-button type="button" icon="o-briefcase" class="" @click="$wire.openItemModal = true">
+                    <x-mary-button type="button" icon="o-plus-circle" class="" @click="$wire.openItemModal = true">
                         Add Item
                     </x-mary-button>
                 </div>
@@ -308,7 +309,7 @@ new class extends Component {
 
 
                 <x-slot:actions>
-                    <x-mary-button label="Save Invoice" class="w-full px-6 btn" type="submit" spinner="save"
+                    <x-mary-button label="Save Invoice" class="w-full px-6 btn bg-primary text-white" type="submit" spinner="save"
                         @click="$wire.save()" />
                 </x-slot:actions>
 
