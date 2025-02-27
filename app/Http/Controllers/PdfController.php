@@ -8,10 +8,11 @@ use App\Services\PdfService;
 use App\Models\Invoice;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Contracts\View\View;
 
 class PdfController extends Controller
 {
-    public function download(Request $request)
+    public function download(Request $request): ?\Illuminate\Http\Response
     {
         $invoiceId = $request->input('invoice');
         $invoice = Invoice::with(['business', 'customer'])->findOrFail($invoiceId);
@@ -20,7 +21,7 @@ class PdfController extends Controller
         return $pdfService->download($invoice);
     }
 
-    public function sendMail(Request $request)
+    public function sendMail(Request $request): view
     {
         $invoice = Invoice::with(['business', 'customer'])->find(1);
         // $pdfService = new PdfService();

@@ -13,7 +13,7 @@ new class extends Component {
         return view('livewire.pages.invoice.view-invoice', ['invoices' => $invoices])->layout('layouts.app');
     }
 
-    public function deleteCustomer(Invoice $invoice)
+    public function deleteInvoice(Invoice $invoice)
     {
         if ($invoice->business_id != auth()->user()->business->id) {
             session()->flash('error', 'Unable to delete this invoice');
@@ -43,7 +43,7 @@ new class extends Component {
                     <div class=" flex justify-center mt-3">
                         <div class="mr-6 ">
                             {{-- <button x-on:click="wire.deleteCustomer(customer); " class="btn bg-red-500 text-white">Delete</button> --}}
-                            <button x-on:click="$wire.deleteCustomer(customer); showModal = false"
+                            <button x-on:click="$wire.deleteInvoice(customer); showModal = false"
                                 class="btn bg-red-500 text-white">
                                 Delete
                             </button>
@@ -60,9 +60,9 @@ new class extends Component {
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
                 @if ($invoices->isEmpty())
-                    <x-empty-state title="No invoices yet" subTitle="Add a Invoice to get started">
+                    <x-empty-state title="No invoice yet" subTitle="Add an invoice to get started">
                         <a href="{{ route('invoice.create') }}" class="btn outline outline-1" wire:navigate>
-                            Add Customer
+                            Add Invoice
                         </a>
                     </x-empty-state>
                 @endif
@@ -71,8 +71,7 @@ new class extends Component {
 
                 <div class="p-6 text-gray-900 {{ $invoices->isEmpty() ? 'hidden' : '' }}">
                     <div class="flex justify-end pb-3">
-                        <a href="{{ route('invoice.create') }}" class="btn btn-neutral outline outline-1"
-                            wire:navigate>
+                        <a href="{{ route('invoice.create') }}" class="btn btn-neutral outline outline-1" wire:navigate>
                             Add Invoice
                         </a>
                     </div>
@@ -117,7 +116,7 @@ new class extends Component {
                                                 class="btn btn-sm btn-neutral outline mr-1" wire:navigate>See</a>
                                             <a href="{{ route('invoice.detail', ['invoice' => $invoice]) }}"
                                                 class="btn btn-sm btn-neutral outline mr-1" wire:navigate>View</a>
-                                     
+
                                             <button class="btn btn-sm btn-danger outline outline-1"
                                                 x-on:click="customer = '{{ $invoice->id }}'; showModal = true;">
                                                 Delete

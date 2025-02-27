@@ -56,7 +56,7 @@ new class extends Component {
         return view('livewire.pages.invoice.create-invoice')->layout('layouts.app');
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'dueDate' => ['required', 'date'],
@@ -70,7 +70,7 @@ new class extends Component {
             'selectedInvoiceItems.*.price' => ['required', 'numeric', 'min:0'],
         ];
     }
-    public function searchCustomers($value)
+    public function searchCustomers($value): void
     {
         $this->searchTerm = $value;
         if (!empty($this->searchTerm)) {
@@ -162,7 +162,7 @@ new class extends Component {
         // Save the invoice
         $invoice->save();
 
-        
+
         // Save associated invoice items
         foreach ($this->selectedInvoiceItems as $item) {
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Livewire\Volt\Component;
 use App\Models\Invoice;
 use App\Models\Business;
@@ -10,18 +11,20 @@ use Illuminate\Support\Facades\Mail;
 
 new class extends Component {
     use Toast;
+
     public Invoice $invoice;
-    public $percentagePaid = 0;
-    public $totalPaidInput = 0.0;
+    public int $percentagePaid = 0;
+    public float $totalPaidInput = 0.0;
     public $openTotalPaidPopUp;
 
-    public function mount(Invoice $invoice)
+    public function mount(Invoice $invoice): void
     {
         $this->invoice = $invoice;
     }
 
     public function render(): mixed
     {
+        /* @var User $userId */
         $userId = auth()->user()->id;
 
         $this->percentagePaid = ($this->invoice->total_paid / $this->invoice->total_amount) * 100;
@@ -35,7 +38,7 @@ new class extends Component {
         return view('livewire.pages.invoice.invoice-detail', ['invoice' => $this->invoice])->layout('layouts.app');
     }
 
-    public function sendMail()
+    public function sendMail(): void
     {
         //add a once a day limit on attempt of receipt sending for each receipt
         //prevent double send.
@@ -49,12 +52,17 @@ new class extends Component {
         $this->success(title: 'Invoice sent Successfully!', css: 'bg-green-500 text-white');
     }
 
-    public function testMail()
+    public function testMail(): void
     {
         $this->redirectRoute('sendMail');
     }
 
-    public function setTotalPaid()
+    public function markAsPaid(): void
+    {
+        $this->invoice->update(['total_paid' => $this->invoice->total_amount, 'payment_status' => 'paid']);
+    }
+
+    public function setTotalPaid(): void
     {
         if ($this->totalPaidInput > $this->invoice->total_amount) {
             $this->warning('Input is greater than total!', css: 'bg-red-500 text-white');
@@ -62,14 +70,14 @@ new class extends Component {
             return;
         }
 
-        $this->invoice->update(['total_paid' => $this->totalPaidInput]);
+        $this->invoice->update(['total_paid' => $this->totalPaidInput, 'payment_status' => 'unpaid']);
         $this->totalPaidInput = 0.0;
         $this->openTotalPaidPopUp = false;
-    }
 
-    public function markAsPaid()
-    {
-        $this->invoice->update(['total_paid' => $this->invoice->total_amount]);
+        if ($this->invoice->total_amount == $this->invoice->total_paid) {
+            $this->markAsPaid();
+            return;
+        }
     }
 }; ?>
 
@@ -92,8 +100,6 @@ new class extends Component {
             </x-mary-form>
 
         </x-mary-modal>
-
-
 
 
         <x-slot:title>

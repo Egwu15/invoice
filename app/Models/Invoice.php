@@ -25,31 +25,32 @@ class Invoice extends Model
         'discount_id',
     ];
 
-    protected $cast = [
+    protected array $cast = [
         'is_sent' => 'boolean'
     ];
 
-    public function invoiceItems()
+    public function invoiceItems(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(InvoiceItem::class);
     }
 
-    public function addedAt()
+    public function addedAt(): string
     {
         return Carbon::parse($this->created_at)->format('d M, Y');
     }
 
-    public function dueDate()
+    public function dueDate(): string
     {
         return $this->due_date ? Carbon::parse($this->due_date)->format('d M, Y') : 'None';
     }
 
-    public function customer()
+    public function customer(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }
 
-    public function business(){
+    public function business(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(Business::class);
     }
 }

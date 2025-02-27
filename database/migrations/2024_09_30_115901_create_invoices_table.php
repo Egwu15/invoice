@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('total_amount', 18, 2);
             $table->decimal('total_paid', 18, 2)->nullable();
             $table->decimal('tax_rate', 5, 2)->default(0.00);
-            $table->enum('payment_status', ['pending', 'paid', 'unpaid', 'part payment'])->default('pending');
+            $table->enum('payment_status', ['pending', 'paid', 'unpaid', 'part payment'])->default('unpaid');
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->string('currency')->required();
             $table->foreignId('discount_id')->nullable()->constrained('discounts')->onDelete('set null');
