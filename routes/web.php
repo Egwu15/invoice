@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\PricingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureUserBusinessIsRegistered;
 use App\Http\Middleware\RedirectUserWithBusiness;
 use Livewire\Volt\Volt;
 
-Route::view('/', 'welcome');
+Route::view('/', 'welcome')->name('welcome');
+Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
+Route::view('/about', 'about')->name('about');
 
 volt::route('dashboard', 'pages.dashboard-volt')
     ->middleware(['auth', 'verified',  EnsureUserBusinessIsRegistered::class])

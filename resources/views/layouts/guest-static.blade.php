@@ -17,21 +17,19 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
-    <header>
+    <div>
+        <header>
 
-        @if (Route::has('login'))
-            <livewire:welcome.navigation />
-        @endif
-    </header>
-    
-    <div class="min-h-screen flex flex-col justify-center items-center pt-6 sm:pt-0">
+            @if (Route::has('login'))
+                <livewire:welcome.navigation />
+            @endif
+        </header>
 
-
-        <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg mx-auto">
+        <div class="md:max-w-[90%] mx-auto px-2">
             {{ $slot }}
         </div>
 
-        <div class="text-center mt-14">
+        <div class="text-center my-14">
             <p>Copyright ©{{ date('Y') }} Invoice. All rights reserved.</p>
         </div>
     </div>

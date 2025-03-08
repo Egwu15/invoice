@@ -4,6 +4,7 @@ namespace App\Providers;
 use App\View\Components\MenuItem;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\DB;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,5 +24,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Blade::component('menu-item', MenuItem::class);
+        DB::prohibitDestructiveCommands(app()->environment('production'));
     }
 }
