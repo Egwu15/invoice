@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PricingController;
 use Illuminate\Support\Facades\Route;
@@ -9,6 +10,7 @@ use Livewire\Volt\Volt;
 
 Route::view('/', 'welcome')->name('welcome');
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
+Route::get('/contact', [ContactUsController::class, 'index'])->name('contact');
 Route::view('/about', 'about')->name('about');
 
 volt::route('dashboard', 'pages.dashboard-volt')
@@ -62,7 +64,8 @@ Route::middleware([EnsureUserBusinessIsRegistered::class, 'auth'])->group(functi
         Volt::route('send/{invoice}', 'pages.invoice.invoiceTemplates.template1')
             ->name('invoice.send');
         Route::get('/download', [PdfController::class, 'download'])->name('download');
-        Route::get('/sendMail', [PdfController::class, 'sendMail'])->name('sendMail');    });
+        Route::get('/sendMail', [PdfController::class, 'sendMail'])->name('sendMail');
+    });
 });
 
 

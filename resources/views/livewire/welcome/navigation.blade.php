@@ -28,6 +28,13 @@
                             </a>
 
                         </li>
+                        <li>
+                            <a wire:navigate href="{{ route('contact') }}"
+                                class="{{ request()->routeIs('contact') ? 'text-primary' : '' }}">
+                                Contact
+                            </a>
+
+                        </li>
 
                         @auth
                             <li>
@@ -71,6 +78,12 @@
                         <a wire:navigate href="{{ route('about') }}"
                             class="{{ request()->routeIs('about') ? 'text-primary' : '' }}">
                             About
+                        </a>
+                    </li>
+                    <li>
+                        <a wire:navigate href="{{ route('contact') }}"
+                            class="{{ request()->routeIs('contact') ? 'text-primary' : '' }}">
+                            Contact
                         </a>
                     </li>
 
