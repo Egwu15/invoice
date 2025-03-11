@@ -32,27 +32,27 @@
             </div>
             <div>
                 <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter">
-                    Marketing website done with Astro
+                    Simplify Your Invoicing Process
                 </h1>
                 <p class="text-lg mt-4 text-slate-600 max-w-xl">
-                    Astroship is a starter template for startups, marketing websites & landing
-                    pages.<wbr /> Built with Astro.build and TailwindCSS. You can quickly
-                    create any website with this starter.
+                    Create, send, and track professional invoices with ease. <wbr /> Our powerful, user-friendly
+                    platform helps freelancers, small businesses, and enterprises get paid faster.
                 </p>
                 <div class="mt-6 flex flex-col sm:flex-row gap-3 ">
-                    <a class="btn bg-black text-white rounded-md text-lg" /> Register for Free </a>
-                    <a class="text-black btn btn-outline px-8 rounded-md border-2 text-lg">Login</a>
+                    <a class="btn bg-black text-white rounded-md text-lg" /> Get Started for Free </a>
+                    <a class="text-black btn btn-outline px-8 rounded-md border-2 text-lg">Sign In</a>
                 </div>
             </div>
         </div>
 
         <div class="mt-16 md:mt-0">
             <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
-                Everything you need to start a website
+                Everything You Need to Streamline Your Invoicing
             </h2>
             <p class="text-lg mt-4 text-slate-600">
-                Astro comes batteries included. It takes the best parts of state-of-the-art
-                tools and adds its own innovations.
+                Our intuitive invoicing system includes customizable templates, automated payment reminders, and
+                real-time analytics. Designed to save you time, reduce errors, and ensure you never miss a payment
+                deadline.
             </p>
         </div>
         {{-- Features --}}
@@ -125,14 +125,15 @@
         <div
             class="bg-black p-8 md:px-20 md:py-20 mt-20 mx-auto max-w-5xl rounded-lg flex flex-col items-center text-center">
             <h2 class="text-white text-4xl md:text-6xl tracking-tight">
-                Build faster websites.
+                Get Paid Faster with Automated Workflows
             </h2>
             <p class="text-slate-400 mt-4 text-lg md:text-xl">
-                Pull content from anywhere and serve it fast with Astro's next-gen island
-                architecture.
+                Simplify your billing cycle from start to finish. Automatically generate invoices, accept multiple
+                payment methods, and sync data with your favorite accounting tools—no more manual follow-ups or tedious
+                spreadsheets.
             </p>
             <div class="flex mt-5">
-                <a class="btn border-white rounded text-lg bg-white" href="#" >Get Started</a>
+                <a class="btn border-white rounded text-lg bg-white" href="#">Get Started</a>
             </div>
         </div>
         <div class="text-center my-14">

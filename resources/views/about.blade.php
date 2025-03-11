@@ -2,17 +2,19 @@
 
     <div class="text-center mt-5 md:mt-10">
         <p class="text-4xl font-bold">About</p>
-        <p class="text-lg">We are a small passionate team.</p>
+        <p class="text-lg">We Are a Small, Passionate Team on a Big Mission.</p>
     </div>
 
     <div class="flex flex-col gap-3 mx-auto max-w-4xl mt-16">
         <h2 class="font-bold text-3xl text-gray-800">
-            Empowering the world with Astro.
+            Empowering Businesses Worldwide with Seamless Invoicing
         </h2>
         <p class="text-lg leading-relaxed text-slate-500">
-            We're a multi-cultural team from around the world! We come from diverse
-            backgrounds, bringing different personalities, experiences and skills to
-            the job. This is what makes our team so special.
+            We’re a tight-knit group of professionals dedicated to simplifying the invoicing process for businesses of
+            all sizes. Our complementary skill sets and passion for innovation come together to build an intuitive
+            platform that saves time, reduces complexity, and helps you get paid faster. By leveraging the latest
+            technology and staying true to our core values, we’ve created an invoicing solution that empowers
+            freelancers, startups, and enterprises alike.
         </p>
     </div>
     <div class="grid md:grid-cols-2 gap-10 mx-auto max-w-4xl mt-12">
@@ -31,7 +33,7 @@
                 </h3>
             </div>
         </div>
-        
+
         <div class="group">
             <div class="w-full aspect-square">
                 <img src='https://i.pravatar.cc/500' alt='Ted' sizes="(max-width: 800px) 100vw, 400px" width={400}

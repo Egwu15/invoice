@@ -10,19 +10,19 @@ class PricingController extends Controller
     {
         $pricing = [
             [
-                'name'    => 'Personal',
+                'name'    => 'Personal (free)',
                 'price'   => 'Free',
                 'popular' => false,
                 'features' => [
                     'Lifetime free',
-                    'Up to 3 users',
-                    'Unlimited Pages',
-                    'Astro Sub domain',
-                    'Basic Integrations',
+                    'Generate Up to 5 Invoices/Month',
+                    'Basic Invoice Templates',
+                    'Automated Email Reminders',
                     'Community Support',
+                    'For freelancers or hobbyists',
                 ],
                 'button'  => [
-                    'text' => 'Get Started',
+                    'text' => 'Sign Up for Free',
                     'link' => '/',
                 ],
             ],
@@ -37,14 +37,14 @@ class PricingController extends Controller
                 'popular' => true,
                 'features' => [
                     'All Free Features',
-                    'Up to 20 users',
-                    '20 Custom domains',
-                    'Unlimited Collaborators',
-                    'Advanced Integrations',
-                    'Priority Support',
+                    'Generate Up to 100 Invoices/Month',
+                    'Advanced Customizable Templates',
+                    'Multiple Payment Gateways',
+                    'Priority Email & Chat Support',
+                    'For growing small businesses',
                 ],
                 'button'  => [
-                    'text' => 'Get Started',
+                    'text' => 'Upgrade to Startup',
                     'link' => '#',
                 ],
             ],
@@ -53,12 +53,15 @@ class PricingController extends Controller
                 'price'   => 'Custom',
                 'popular' => false,
                 'features' => [
-                    'All Pro Features',
-                    'Unlimited Custom domains',
-                    '99.99% Uptime SLA',
-                    'SAML & SSO Integration',
+
+                    'Unlimited Invoices & Users',
+                    'Dedicated Infrastructure',
+                    'Multi-Currency Support',
+                    'Advanced Role-Based Access',
                     'Dedicated Account Manager',
-                    '24/7 Phone Support',
+                    '24/7 Phone & Chat Support',
+                    'For large teams and enterprises',
+
                 ],
                 'button'  => [
                     'text' => 'Contact us',

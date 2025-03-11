@@ -1,8 +1,8 @@
 <x-guest-static-layout>
     <div class=" mx-auto px-4 max-w-[996px] text-center mt-5 md:mt-11">
-        <p class="font-bold text-5xl my-3">Pricing</p>
+        <p class="font-bold text-5xl my-3">Plans & Pricing</p>
         <p class="text-xl mb-10">
-            Simple & Predictable pricing. No Surprises.
+            Flexible Options for Every Business
         </p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach ($pricing as $plan)
