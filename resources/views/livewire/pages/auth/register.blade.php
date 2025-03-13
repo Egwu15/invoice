@@ -41,7 +41,7 @@ new #[Layout('layouts.guest')] class extends Component {
         <h2>
             Create an account with us!
         </h2>
-        <progress class="progress w-56" value="50" max="100"></progress>
+        <progress class="progress w-56 progress-primary" value="50" max="100"></progress>
     </div>
     <form wire:submit="register">
         <!-- Name -->
@@ -80,16 +80,19 @@ new #[Layout('layouts.guest')] class extends Component {
 
 
         </div>
+        <div class="w-full text-center mt-3">
+            <x-primary-button class="w-full bg-primary py-3">
+                <p class="mx-auto">Register</p>
+            </x-primary-button>
+        </div>
+        <div class="text-center mt-4">
 
-        <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 border-gray-500"
                 href="{{ route('login') }}" wire:navigate>
-                {{ __('Already registered?') }}
+                Already registered?
             </a>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
+
         </div>
     </form>
 </div>
