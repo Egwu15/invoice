@@ -39,7 +39,7 @@
                     platform helps freelancers, small businesses, and enterprises get paid faster.
                 </p>
                 <div class="mt-6 flex flex-col sm:flex-row gap-3 ">
-                    <a class="btn bg-black text-white rounded-md text-lg" /> Get Started for Free </a>
+                    <a class="btn bg-purple-950 text-white rounded-md text-lg" /> Get Started for Free </a>
                     <a class="text-black btn btn-outline px-8 rounded-md border-2 text-lg">Sign In</a>
                 </div>
             </div>
@@ -59,7 +59,7 @@
         <div class="grid sm:grid-cols-2 md:grid-cols-3 mt-16 gap-16">
 
             <div class="flex gap-4 items-start">
-                <div class="mt-1 bg-black rounded-full  p-2 flex">
+                <div class="mt-1 bg-purple-950 rounded-full  p-2 flex">
                     <x-mary-icon name="o-document-text" class="text-white my-auto " />
                 </div>
                 <div>
@@ -69,7 +69,7 @@
                 </div>
             </div>
             <div class="flex gap-4 items-start">
-                <div class="mt-1 bg-black rounded-full  p-2 flex">
+                <div class="mt-1 bg-purple-950 rounded-full  p-2 flex">
                     <x-mary-icon name="o-user-group" class="text-white my-auto " />
                 </div>
                 <div>
@@ -79,7 +79,7 @@
                 </div>
             </div>
             <div class="flex gap-4 items-start">
-                <div class="mt-1 bg-black rounded-full  p-2 flex">
+                <div class="mt-1 bg-purple-950 rounded-full  p-2 flex">
                     <x-mary-icon name="o-currency-dollar" class="text-white my-auto " />
                 </div>
                 <div>
@@ -89,7 +89,7 @@
                 </div>
             </div>
             <div class="flex gap-4 items-start">
-                <div class="mt-1 bg-black rounded-full  p-2 flex">
+                <div class="mt-1 bg-purple-950 rounded-full  p-2 flex">
                     <x-mary-icon name="o-briefcase" class="text-white my-auto " />
                 </div>
                 <div>
@@ -99,7 +99,7 @@
                 </div>
             </div>
             <div class="flex gap-4 items-start">
-                <div class="mt-1 bg-black rounded-full  p-2 flex">
+                <div class="mt-1 bg-purple-950 rounded-full  p-2 flex">
                     <x-mary-icon name="o-chart-bar" class="text-white my-auto " />
                 </div>
                 <div>
@@ -109,7 +109,7 @@
                 </div>
             </div>
             <div class="flex gap-4 items-start">
-                <div class="mt-1 bg-black rounded-full  p-2 flex">
+                <div class="mt-1 bg-purple-950 rounded-full  p-2 flex">
                     <x-mary-icon name="o-briefcase" class="text-white my-auto " />
                 </div>
                 <div>
@@ -123,7 +123,7 @@
 
         </div>
         <div
-            class="bg-black p-8 md:px-20 md:py-20 mt-20 mx-auto max-w-5xl rounded-lg flex flex-col items-center text-center">
+            class="bg-purple-950 p-8 md:px-20 md:py-20 mt-20 mx-auto max-w-5xl rounded-lg flex flex-col items-center text-center">
             <h2 class="text-white text-4xl md:text-6xl tracking-tight">
                 Get Paid Faster with Automated Workflows
             </h2>

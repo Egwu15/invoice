@@ -21,7 +21,8 @@
                         href="mailto:hello@astroshipstarter.com">hello@astroshipstarter.com</a>
                 </div>
                 <div class="flex items-center mt-2 space-x-2 text-gray-600">
-                    <x-mary-icon class="text-gray-400 w-4 h-4" name="o-phone" /><a href="tel:+1 (987) 4587 899">+1 (987) 4587
+                    <x-mary-icon class="text-gray-400 w-4 h-4" name="o-phone" /><a href="tel:+1 (987) 4587 899">+1 (987)
+                        4587
                         899</a>
                 </div>
             </div>
@@ -46,7 +47,7 @@
                     <div class="empty-feedback text-red-400 text-sm mt-1">
                         Please provide your email address.
                     </div>
-                   
+
                 </div>
                 <div class="mb-3">
                     <textarea name="message" required placeholder="Your Message"
@@ -55,7 +56,7 @@
                         Please enter your message.
                     </div>
                 </div>
-                <button type="submit" class="btn w-full bg-black text-white">Send Message</button>
+                <button type="submit" class="btn w-full bg-purple-950 text-white">Send Message</button>
                 <div id="result" class="mt-3 text-center"></div>
             </form>
         </div>

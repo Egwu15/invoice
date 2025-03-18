@@ -3,7 +3,7 @@
 
     <x-slot:sidebar drawer="main-drawer" collapsible collapse-icon="o-power" class="bg-gray-50" right-mobile>
 
-        <x-mary-menu activeBgColor="bg-purple-500 text-white">
+        <x-mary-menu activeBgColor="bg-primary text-white">
 
             {{-- User --}}
             @if ($user = auth()->user())

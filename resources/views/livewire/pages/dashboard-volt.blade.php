@@ -58,7 +58,7 @@ new class extends Component {
                     [
                         'label' => 'Invoices Generated',
                         'data' => $invoicesGenerated,
-                        'backgroundColor' => 'rgba(126, 34, 206)',
+                        'backgroundColor' => ' rgb(59, 7, 100)',
                         'borderColor' => 'rgba(126, 34, 206)',
                         'borderWidth' => 1,
                     ],

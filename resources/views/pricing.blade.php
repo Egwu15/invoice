@@ -29,14 +29,14 @@
                         @foreach ($plan['features'] as $feature)
                             <li class="flex items-start gap-3 text-gray-800">
                                 <!-- Inline SVG for Tick Icon -->
-                                <x-mary-icon name='s-check-circle'/>
+                                <x-mary-icon name='s-check-circle' />
                                 <span>{{ $feature }}</span>
                             </li>
                         @endforeach
                     </ul>
                     <div class="flex mt-8 justify-center">
                         <a href="{{ $plan['button']['link'] ?? '#' }}"
-                            class="px-4 py-2 rounded btn w-full {{ $plan['popular'] ? 'bg-black  text-white' : 'btn-outline border-2' }}">
+                            class="px-4 py-2 rounded btn w-full {{ $plan['popular'] ? 'bg-purple-950  text-white' : 'btn-outline border-2' }}">
                             {{ $plan['button']['text'] ?? 'Get Started' }}
                         </a>
                     </div>
