@@ -112,8 +112,8 @@ new class extends Component {
                                         <td>{{ $invoice->dueDate() }}</td>
                                         <td>{{ $invoice->addedAt() }}</td>
                                         <td>
-                                            <a href="{{ route('invoice.send', ['invoice' => $invoice]) }}"
-                                                class="btn btn-sm btn-neutral outline mr-1" wire:navigate>See</a>
+                                            {{-- <a href="{{ route('invoice.send', ['invoice' => $invoice]) }}"
+                                                class="btn btn-sm btn-neutral outline mr-1" wire:navigate>See</a> --}}
                                             <a href="{{ route('invoice.detail', ['invoice' => $invoice]) }}"
                                                 class="btn btn-sm btn-neutral outline mr-1" wire:navigate>View</a>
 

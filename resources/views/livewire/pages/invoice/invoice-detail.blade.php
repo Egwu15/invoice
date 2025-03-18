@@ -42,17 +42,20 @@ new class extends Component {
     {
         //add a once a day limit on attempt of receipt sending for each receipt
         //prevent double send.
+
         $pdfService = new PdfService();
         $pdfContent = $pdfService->generate($this->invoice);
         try {
-            Mail::to('charles.aoloyede@gmail.com')->send(new SendReceipt($this->invoice, $pdfContent));
+            Mail::to($this->invoice->customer->email)->send(new SendReceipt($this->invoice, $pdfContent));
         } catch (\Throwable $th) {
             $this->warning('Unable to send Email', css: 'bg-red-500 text-white');
+            return;
         }
         $this->success(title: 'Invoice sent Successfully!', css: 'bg-green-500 text-white');
     }
 
-    public function testMail(): void
+    //removed from ui
+    public function viewReceipt(): void
     {
         $this->redirectRoute('sendMail');
     }
@@ -110,8 +113,8 @@ new class extends Component {
                     onclick="window.location.href='{{ route('download', ['invoice' => $invoice]) }}'" />
                 <x-mary-button label="Send Receipt" external icon="o-paper-airplane" class=" bg-purple-700 text-white"
                     wire:click="sendMail" spinner />
-                <x-mary-button label="Test Mail" external icon="o-eye" class="bg-purple-700 text-white"
-                    wire:click='testMail' spinner />
+                {{-- <x-mary-button label="View  Mail" external icon="o-eye" class="bg-purple-700 text-white"
+                    wire:click='viewReceipt' spinner /> --}}
                 <x-mary-button label="Set total paid" external icon="o-check" class="bg-purple-700 text-white"
                     @click="$wire.openTotalPaidPopUp = true" />
                 <x-mary-button label="Mark as Paid" external icon="o-check" class="bg-purple-700 text-white"
